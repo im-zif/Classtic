@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024170805599",
+    "project_id": "classtic-47654",
+    "storage_bucket": "classtic-47654.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024170805599:android:87fc86ce5727afa4be0eea",
+        "android_client_info": {
+          "package_name": "com.example.classtic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClu9rNcNgIWljRiAzuEnvuMKoXFUYSU2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
