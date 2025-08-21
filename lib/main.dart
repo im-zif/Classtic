@@ -1,5 +1,5 @@
 import 'package:classtic/pages/auth_page.dart';
-import 'package:classtic/pages/dashboard.dart';
+import 'package:classtic/pages/home_page.dart';
 import 'package:classtic/pages/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/loading' : (context) => LoadingScreen(),
         '/auth' : (context) => AuthPage(),
-        '/dashboard' : (context) => Dashboard()
+        '/homepage' : (context) => HomePage()
       },
       home: LoadingScreen(),                                                    //start with loading screen
     );
