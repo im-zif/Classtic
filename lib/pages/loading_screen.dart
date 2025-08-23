@@ -12,7 +12,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   //wait 3 seconds in loading screen
   void leaveLoadingScreen () async {
-    Future.delayed(Duration(seconds: 3), (){
+    Future.delayed(Duration(seconds: 1), (){
       Navigator.pushReplacementNamed(context, '/auth');
     });
   }

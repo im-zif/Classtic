@@ -13,6 +13,9 @@ class _AssignmentsState extends State<Assignments> {
     return Center(
       child: Text(
         'Assignments',
+        style: TextStyle(
+            color: Colors.white
+        ),
       ),
     );
   }

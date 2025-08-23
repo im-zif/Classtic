@@ -13,6 +13,9 @@ class _ProfileState extends State<Profile> {
     return Center(
       child: Text(
         'Profile',
+        style: TextStyle(
+            color: Colors.white
+        ),
       ),
     );
   }

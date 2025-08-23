@@ -28,13 +28,13 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
 
     //dashboard
-    const Dashboard(),
+    Dashboard(),
 
     //assignments
-    const Assignments(),
+    Assignments(),
 
     //profile
-    const Profile()
+    Profile()
   ];
 
   //sign user out method
