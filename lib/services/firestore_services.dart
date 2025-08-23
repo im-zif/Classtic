@@ -20,7 +20,16 @@ class FirestoreService{
   }
 
   //UPDATE: update announcements given a doc id
+  Future<void> updateAnnouncement(String docID, String newAnnouncement){
+    return announcements.doc(docID).update({
+      'announcement': newAnnouncement,
+      'timestamp': Timestamp.now()
+    });
+  }
 
   //DELETE: delete announcements given a doc id
+  Future<void> deleteAnnouncement(String docID){
+    return announcements.doc(docID).delete();
+  }
 
 }

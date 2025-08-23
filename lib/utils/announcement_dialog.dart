@@ -2,10 +2,11 @@ import 'package:classtic/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
 class AnnouncementDialog extends StatelessWidget {
+  String? docID;
   final TextEditingController controller;
   final FirestoreService firestoreService = FirestoreService();
 
-  AnnouncementDialog({super.key, required this.controller});
+  AnnouncementDialog({super.key, required this.controller, this.docID});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,11 @@ class AnnouncementDialog extends StatelessWidget {
               child: IconButton(
                 color: Colors.white,
                 onPressed: (){
-                  firestoreService.addAnnouncement(controller.text);
+                  if(docID == null){
+                    firestoreService.addAnnouncement(controller.text);
+                  }else{
+                    firestoreService.updateAnnouncement(docID!, controller.text);
+                  }
                   controller.clear();
                   Navigator.pop(context);
                 },

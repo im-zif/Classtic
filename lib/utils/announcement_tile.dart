@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:classtic/pages/dashboard.dart';
 
 class AnnouncementTile extends StatelessWidget {
 
   final String announcement;
   final String timestamp;
 
-  const AnnouncementTile({super.key, required this.announcement, required this.timestamp});
+  final void Function()? updateAnn;
+  final void Function()? deleteAnn;
+
+  const AnnouncementTile({super.key, required this.announcement, required this.timestamp, required this.updateAnn, required this.deleteAnn});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,26 @@ class AnnouncementTile extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: updateAnn,
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.grey[500],
+                          size: 15,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: deleteAnn,
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.grey[500],
+                          size: 15,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
               SizedBox(height: 15,),

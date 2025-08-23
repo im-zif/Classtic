@@ -18,19 +18,20 @@ class _DashboardState extends State<Dashboard> {
   final FirestoreService firestoreService = FirestoreService();
 
   //Add announcement method
-  void addNewAnnouncement(){
+  void addNewAnnouncement([String? docID]){
     //show dialog box
     showDialog(context: context, builder: (context){
       return AnnouncementDialog(
         controller: controller,
+        docID: docID,
       );
     });
   }
-  
-  //Announcements list
-  List announcements = [
-    'No announcements for now but i will add more later'
-  ];
+
+  //delete announcement method
+  void deleteAnn(String docID){
+    firestoreService.deleteAnnouncement(docID);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +69,11 @@ class _DashboardState extends State<Dashboard> {
 
                   if (announcementsList.isEmpty) {
                     //handle empty collection
-                    return ListView(
-                      children: [
-                        AnnouncementTile(
-                          announcement: 'No announcements',
-                          timestamp: 'Add announcement to show',
-                        ),
-                      ],
+                    return Center(
+                      child: Text(
+                        "No announcements",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     );
                   }
 
@@ -97,6 +96,8 @@ class _DashboardState extends State<Dashboard> {
                       return AnnouncementTile(
                         announcement: announcementText,
                         timestamp: announcementTime,
+                        updateAnn: () => addNewAnnouncement(docID),
+                        deleteAnn: () => deleteAnn(docID),
                       );
                     }
                   );
