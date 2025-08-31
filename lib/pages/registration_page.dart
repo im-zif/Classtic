@@ -2,6 +2,7 @@ import 'package:classtic/services/auth_services.dart';
 import 'package:classtic/utils/my_button.dart';
 import 'package:classtic/utils/square_tile.dart';
 import 'package:classtic/utils/text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -85,12 +86,21 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
       //try sign up
       try{
-        //check if password in confirmed
+        //check if password is confirmed and create user
         if(passwordController.text == confirmPasswordController.text){
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
               email: emailController.text,
               password: passwordController.text
           );
+
+          //create users document
+          FirebaseFirestore.instance
+            .collection("User")
+            .doc(userCredential.user!.email)
+            .set({
+              'username': emailController.text.split('@')[0]
+            });
+
           //pop loading
           Navigator.pop(context);
         }
