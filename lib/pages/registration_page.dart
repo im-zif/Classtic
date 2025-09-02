@@ -85,38 +85,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
       }
 
       //try sign up
-      try{
-        //check if password is confirmed and create user
-        if(passwordController.text == confirmPasswordController.text){
-          UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: emailController.text,
-              password: passwordController.text
+      try {
+        // check if password is confirmed
+        if (passwordController.text == confirmPasswordController.text) {
+          UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
           );
 
-          //create users document
-          FirebaseFirestore.instance
-            .collection("User")
-            .doc(userCredential.user!.email)
-            .set({
-              'username': emailController.text.split('@')[0]
-            });
+          String uid = userCredential.user!.uid;
 
-          //pop loading
-          Navigator.pop(context);
-        }
-        else{
-          //pop loading
-          Navigator.pop(context);
+          // create users document with UID
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(uid)
+              .set({
+            'username': emailController.text.split('@')[0],
+            'email': emailController.text,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
 
-          //show password error message
+          // pop loading
+          Navigator.pop(context);
+        } else {
+          Navigator.pop(context);
           showPasswordErrorMessage();
         }
       } on FirebaseAuthException catch (e) {
-
-        //pop loading
         Navigator.pop(context);
 
-        //show error message
         if (e.code == 'invalid-email') {
           showErrorMessage("The email address is not valid.");
         } else if (e.code == 'email-already-in-use') {
@@ -127,6 +125,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
           showErrorMessage("Error: ${e.message}");
         }
       }
+
+
     }
 
     return Scaffold(

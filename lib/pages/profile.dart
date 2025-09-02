@@ -20,7 +20,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       backgroundColor: Color(0xFF0D0F13),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('User').doc(user!.email).snapshots(),
+        stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
         builder: (context, snapshot){
           //get user data
           if(snapshot.hasData){

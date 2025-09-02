@@ -13,7 +13,7 @@ class FirestoreService{
     });
   }
 
-  //READ: ger announcement from database
+  //READ: get announcement from database
   Stream<QuerySnapshot> getAnnouncementsStream(){
     final announcementsSteam = announcements.orderBy('timestamp', descending: true).snapshots();
     return announcementsSteam;
@@ -31,5 +31,7 @@ class FirestoreService{
   Future<void> deleteAnnouncement(String docID){
     return announcements.doc(docID).delete();
   }
+
+
 
 }
