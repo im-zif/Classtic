@@ -1,59 +1,91 @@
 import 'package:classtic/utils/pdf_button.dart';
 import 'package:flutter/material.dart';
 
-class AssignmentTile extends StatelessWidget {
+import '../pages/pdf_viewer.dart';
 
+class AssignmentTile extends StatelessWidget {
   final String subject;
   final String description;
+  final String? pdfUrl;
   final Function()? selectPDF;
   final Function()? uploadPDF;
+  final Function()? remove;
 
-  const AssignmentTile({super.key, required this.subject, required this.description, required this.selectPDF, required this.uploadPDF});
+  const AssignmentTile({
+    super.key,
+    required this.subject,
+    required this.description,
+    this.selectPDF,
+    this.uploadPDF,
+    this.remove,
+    this.pdfUrl
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: Color(0xFF2C333D),
-            border: BoxBorder.all(
-                color: Color(0xFF2C333D)
-            ),
-            borderRadius: BorderRadius.circular(6)
+          color: const Color(0xFF2C333D),
+          borderRadius: BorderRadius.circular(6),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+          padding: const EdgeInsets.all(12),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Subject',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
-              ),
-              SizedBox(height: 10,),
-              Text(
-                'Description',
-                style: TextStyle(
-                  color: Colors.white
-                ),
-              ),
-              SizedBox(height: 20,),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    subject,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    onPressed: remove,
+                    icon: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Text(
+                description,
+                style: const TextStyle(color: Colors.white70),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   PdfButton(
                     buttonText: 'Select PDF',
                     onTap: selectPDF,
                   ),
-                  SizedBox(width: 20,),
                   PdfButton(
                     buttonText: 'Upload',
                     onTap: uploadPDF,
-                  )
+                  ),
+                  PdfButton(
+                    buttonText: 'View PDF',
+                    onTap: (){
+                      if (pdfUrl != null && pdfUrl!.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PDFViewerScreen(pdfUrl: pdfUrl!),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("No PDF uploaded yet")),
+                        );
+                      }
+                    },
+                  ),
                 ],
               )
             ],

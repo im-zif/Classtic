@@ -103,11 +103,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
               .set({
             'username': emailController.text.split('@')[0],
             'email': emailController.text,
+            'profileImage': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg',
             'createdAt': FieldValue.serverTimestamp(),
           });
 
           // pop loading
-          Navigator.pop(context);
+          Navigator.of(context, rootNavigator: true).pop();
         } else {
           Navigator.pop(context);
           showPasswordErrorMessage();

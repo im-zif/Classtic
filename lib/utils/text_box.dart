@@ -4,8 +4,9 @@ class MyTextBox extends StatelessWidget {
 
   final String category;
   final String content;
+  void Function()? onPressed;
 
-  const MyTextBox({super.key, required this.category, required this.content});
+  MyTextBox({super.key, required this.category, required this.content, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class MyTextBox extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: (){},
+                onPressed: onPressed,
                 icon: Icon(
                   Icons.settings,
                   size: 20,
@@ -42,7 +43,8 @@ class MyTextBox extends StatelessWidget {
           Text(
             content,
             style: TextStyle(
-              color: Colors.white
+              color: Colors.white,
+              fontSize: 18
             ),
           )
         ],

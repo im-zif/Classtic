@@ -56,7 +56,10 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 IconButton(
                   onPressed: addNewAnnouncement,
-                  icon: Icon(Icons.add),
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
                 )
               ],
             ),

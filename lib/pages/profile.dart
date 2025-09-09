@@ -2,6 +2,9 @@ import 'package:classtic/utils/text_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,6 +17,78 @@ class _ProfileState extends State<Profile> {
 
   final nameController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser;
+
+  Future<void> uploadProfileImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+
+      try {
+        //Upload to Firebase Storage
+        String filePath = 'profilePics/${user!.uid}.png';
+        await FirebaseStorage.instance.ref(filePath).putFile(imageFile);
+
+        //Get download URL
+        String downloadURL = await FirebaseStorage.instance.ref(filePath).getDownloadURL();
+
+        //Update Firestore user doc with image URL
+        await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+          'profileImage': downloadURL,
+        });
+
+        setState(() {});
+      } catch (e) {
+        print("Error uploading profile image: $e");
+      }
+    }
+  }
+
+
+
+  Future<void> editField(String field) async {
+    String newValue = '';
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Color(0xFF2C333D),
+        title: Text(
+          'Edit $field',
+          style: TextStyle(
+            color: Colors.white
+          ),
+        ),
+        content: TextField(
+          autofocus: true,
+          style: TextStyle(
+            color: Colors.white
+          ),
+          decoration: InputDecoration(
+            hintText: 'Enter new $field',
+          ),
+          onChanged: (value){
+            newValue = value;
+          },
+          ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(newValue),
+            child: Text('Save'),
+          )
+        ],
+        ),
+      );
+    if(newValue.trim().isNotEmpty){
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+        field: newValue,
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +106,14 @@ class _ProfileState extends State<Profile> {
               children: [
                 //profile photo
                 Center(
-                  child: CircleAvatar(
-                    radius: 70,
+                  child: InkWell(
+                    onTap: uploadProfileImage,
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundImage: userData['profileImage'] != null
+                          ? NetworkImage(userData['profileImage'])
+                          : AssetImage('images/pfp.png') as ImageProvider,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20,),
@@ -75,7 +156,8 @@ class _ProfileState extends State<Profile> {
                 MyTextBox(
                   category: 'Name',
                   content: userData['username'],
-                )
+                  onPressed: ()=> editField('username'),
+                ),
 
               ],
             );

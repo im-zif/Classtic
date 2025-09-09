@@ -17,10 +17,10 @@ class MyTextField extends StatelessWidget {
       ),
       decoration: InputDecoration(
         filled: true,
-        fillColor: Color(0xFF2C333D), // Lighter color than the background
+        fillColor: Color(0xFF2C333D),
         border: OutlineInputBorder(),
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white70), // Optional: for better contrast
+        hintStyle: TextStyle(color: Colors.white70),
       ),
       obscureText: obscureText,
     );
